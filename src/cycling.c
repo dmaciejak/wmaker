@@ -87,8 +87,8 @@ void StartWindozeCycle(WWindow *wwin, XEvent *event, Bool next, Bool class_only)
 	KeyCode         endKey         = XKeysymToKeycode(dpy, XK_End);
 	KeyCode         shiftLKey      = XKeysymToKeycode(dpy, XK_Shift_L);
 	KeyCode         shiftRKey      = XKeysymToKeycode(dpy, XK_Shift_R);
-	KeyCode         escapeKey      = XKeysymToKeycode(dpy, XK_Escape);
 	KeyCode         returnKey      = XKeysymToKeycode(dpy, XK_Return);
+	KeyCode         closeKey       = wKeyBindings[WKBD_CLOSE].keycode;
 	Bool            esc_cancel     = False;
 	Bool            somethingElse  = False;
 	Bool            done           = False;
@@ -101,6 +101,9 @@ void StartWindozeCycle(WWindow *wwin, XEvent *event, Bool next, Bool class_only)
 
 	if (!wwin)
 		return;
+
+	if (closeKey == 0)
+		closeKey = XKeysymToKeycode(dpy, XK_Escape);
 
 	if (next) {
 		if (class_only)
@@ -172,7 +175,7 @@ void StartWindozeCycle(WWindow *wwin, XEvent *event, Bool next, Bool class_only)
 				newFocused = wSwitchPanelSelectFirst(swpanel, ev.xkey.keycode != homeKey);
 				oldFocused = change_focus_and_raise(newFocused, oldFocused, swpanel, scr, False);
 
-			} else if (ev.xkey.keycode == escapeKey) {
+			} else if (ev.xkey.keycode == closeKey) {
 
 				/* Focus the first window of the swpanel, despite the 'False' */
 				newFocused = wSwitchPanelSelectFirst(swpanel, False);
